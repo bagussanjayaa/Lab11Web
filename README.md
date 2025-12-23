@@ -13,34 +13,6 @@ Praktikum ini bertujuan untuk memahami **PHP OOP Lanjutan** dengan penerapan:
 - Template layout (header, sidebar, footer)
 - Pemisahan CSS untuk styling
 
-## Struktur Folder
-```
-LAB11_PHP_OOP/
-├── .htaccess
-├── config.php
-├── index.php
-│
-├── class/
-│   ├── database.php
-│   └── form.php
-│
-├── module/
-│   └── artikel/
-│       ├── index.php   # Read
-│       ├── tambah.php  # Create
-│       ├── ubah.php    # Update
-│       └── hapus.php   # Delete
-│
-├── template/
-│   ├── header.php
-│   ├── sidebar.php
-│   └── footer.php
-│
-└── assets/
-    └── css/
-        └── style.css
-```
-
 ## Langkah Praktikum
 
 ### 1. Konfigurasi Database
@@ -117,3 +89,222 @@ Tujuannya agar query SQL lebih terstruktur dan reusable.
 - Footer tampil di bawah dengan identitas praktikum.
 
 ![foto](pict/04.png)
+
+# Praktikum PHP OOP Modular (LAB11)
+
+## Tujuan Praktikum
+Praktikum ini bertujuan untuk:
+- Menerapkan konsep **Object Oriented Programming (OOP)** pada PHP
+- Mengimplementasikan **struktur modular**
+- Membuat aplikasi web dinamis dengan fitur **CRUD**
+- Mengelola autentikasi user menggunakan **Session**
+- Membuat tampilan web yang **responsif** menggunakan Bootstrap
+
+
+## Struktur Folder Project
+Project disusun secara modular agar kode lebih terorganisir dan mudah dikembangkan.
+
+```
+LAB11_PHP_OOP/
+│
+├── class/
+│   ├── database.php
+│   └── form.php
+│
+├── module/
+│   ├── artikel/
+│   │   ├── index.php
+│   │   ├── tambah.php
+│   │   └── ubah.php
+│   │
+│   ├── home/
+│   │   └── index.php
+│   │
+│   └── user/
+│       ├── login.php
+│       ├── logout.php
+│       └── profile.php
+│
+├── template/
+│   ├── header.php
+│   └── footer.php
+│
+├── .htaccess
+├── config.php
+└── index.php
+```
+
+
+##  Konfigurasi Aplikasi
+
+### `config.php`
+
+Digunakan untuk:
+
+* Menyimpan konfigurasi database
+* Menentukan `base_url`
+* Mengatur pengaturan global aplikasi
+
+
+## Class Database
+
+### `class/database.php`
+
+Class ini digunakan untuk:
+
+* Membuat koneksi database MySQL
+* Menjalankan query SQL
+* Mengambil data dari database
+
+Konsep OOP diterapkan agar koneksi database dapat digunakan ulang di seluruh module.
+
+## Class Form
+
+### `class/form.php`
+
+Digunakan untuk:
+
+* Membantu pembuatan elemen form
+* Menyeragamkan tampilan input
+* Mengurangi penulisan kode HTML berulang
+
+
+## Routing Aplikasi
+
+Routing dilakukan melalui file utama:
+
+### `index.php` (root)
+
+File ini berfungsi sebagai:
+
+* Router utama aplikasi
+* Menentukan module dan aksi berdasarkan URL
+
+Contoh URL:
+
+```text
+http://localhost/LAB11_PHP_OOP/artikel/index
+http://localhost/LAB11_PHP_OOP/user/login
+```
+
+
+## Modul Home
+
+### `module/home/index.php`
+
+Merupakan halaman utama aplikasi setelah user login.
+
+Fungsi:
+
+* Menampilkan halaman dashboard sederhana
+* Memberikan navigasi ke module lain
+
+![foto](gambar/01.png)
+
+## Modul User
+
+### Login
+
+`module/user/login.php`
+Digunakan untuk:
+
+* Autentikasi user
+* Validasi username dan password
+* Menyimpan session login
+
+![foto](gambar/02.png)
+
+### Profile
+
+`module/user/profile.php`
+Digunakan untuk:
+
+* Menampilkan data user
+* Mengubah password user
+
+![foto](gambar/06.png)
+
+### Logout
+
+`module/user/logout.php`
+Digunakan untuk:
+
+* Menghapus session
+* Mengakhiri proses login
+
+## Modul Artikel (CRUD)
+
+### Create
+
+`module/artikel/tambah.php`
+Digunakan untuk menambahkan artikel baru ke database.
+
+![foto](gambar/04.png)
+
+### Read
+
+`module/artikel/index.php`
+Digunakan untuk:
+
+* Menampilkan daftar artikel
+* Menampilkan judul dan isi artikel
+* Menyediakan tombol Edit dan Hapus
+
+![foto](gambar/03.png)
+
+### Update
+
+`module/artikel/ubah.php`
+Digunakan untuk mengubah data artikel berdasarkan ID.
+
+![foto](gambar/05.png)
+
+### Delete
+
+Proses hapus dilakukan langsung di:
+
+```text
+artikel/index?hapus=ID
+```
+
+## Template Header
+
+### `template/header.php`
+
+Digunakan untuk:
+
+* Menampilkan navbar
+* Memuat Bootstrap
+* Menyimpan CSS global
+* Menyesuaikan menu berdasarkan status login
+
+## Template Footer
+
+### `template/footer.php`
+
+Footer dirancang dengan fitur:
+
+* Posisi **fixed di bawah layar**
+* Lebar penuh kiri–kanan
+* Tetap terlihat walaupun halaman di-scroll
+* Responsif untuk desktop dan mobile
+
+## File .htaccess
+
+Digunakan untuk:
+
+* Mengaktifkan URL friendly
+* Menghilangkan `.php` dari URL
+* Mengarahkan request ke `index.php`
+
+
+## Kesimpulan
+
+Dengan praktikum ini, diperoleh pemahaman tentang:
+
+* Penerapan OOP dalam PHP
+* Struktur project modular
+* Penggunaan routing sederhana
+* Implementasi CRUD
+* Penggunaan session untuk autentikasi
+* Desain antarmuka responsif dengan Bootstrap
