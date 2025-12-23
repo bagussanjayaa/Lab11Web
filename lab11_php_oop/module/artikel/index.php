@@ -1,21 +1,56 @@
 <?php
 $db = new Database();
-$result = $db->query("SELECT * FROM artikel");
 
-echo "<h2>📄 Daftar Artikel</h2>";
-echo "<a href='/LAB11_PHP_OOP/artikel/tambah' class='btn btn-success mb-3'>+ Tambah Artikel</a>";
-echo "<table class='table table-bordered table-hover'>";
-echo "<thead class='table-dark'><tr><th>ID</th><th>Judul</th><th>Isi</th><th>Aksi</th></tr></thead><tbody>";
-while ($row = $result->fetch_assoc()) {
-  echo "<tr>
-          <td>{$row['id']}</td>
-          <td>{$row['judul']}</td>
-          <td>{$row['isi']}</td>
-          <td>
-            <a href='/LAB11_PHP_OOP/artikel/ubah?id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
-            <a href='/LAB11_PHP_OOP/artikel/hapus?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Yakin hapus?\")'>Hapus</a>
-          </td>
-        </tr>";
+/* ================== PROSES HAPUS ================== */
+if (isset($_GET['hapus'])) {
+    $id = (int)$_GET['hapus'];
+    $db->query("DELETE FROM artikel WHERE id = $id");
+    header('Location: ' . $config['base_url'] . '/artikel/index');
+    exit;
 }
-echo "</tbody></table>";
+/* ================================================== */
+
+$data = $db->query("SELECT * FROM artikel ORDER BY id DESC");
 ?>
+
+<div class="container mt-4">
+    <h3>Data Artikel</h3>
+
+    <a href="<?= $config['base_url'] ?>/artikel/tambah"
+       class="btn btn-success mb-3">
+       + Tambah Artikel
+    </a>
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th width="50">No</th>
+                <th width="200">Judul</th>
+                <th>Isi Artikel</th>
+                <th width="180">Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <?php $no = 1; while ($row = $data->fetch_assoc()): ?>
+            <tr>
+                <td><?= $no++ ?></td>
+                <td><?= htmlspecialchars($row['judul']) ?></td>
+                <td><?= nl2br(htmlspecialchars($row['isi'])) ?></td>
+                <td>
+                    <a href="<?= $config['base_url'] ?>/artikel/ubah?id=<?= $row['id'] ?>"
+                       class="btn btn-warning btn-sm mb-1">
+                       Edit
+                    </a>
+
+                    <a href="<?= $config['base_url'] ?>/artikel/index?hapus=<?= $row['id'] ?>"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Yakin ingin menghapus artikel ini?')">
+                       Hapus
+                    </a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>

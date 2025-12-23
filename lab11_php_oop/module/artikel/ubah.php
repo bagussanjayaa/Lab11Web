@@ -1,32 +1,44 @@
 <?php
 $db = new Database();
-$id = $_GET['id'];
 
-// Ambil data lama dari DB
-$artikel = $db->get("artikel", "id=$id");
+$id = (int)$_GET['id'];
+$data = $db->query("SELECT * FROM artikel WHERE id=$id")->fetch_assoc();
 
-if ($_POST) {
-  $data = [
-    'judul' => $_POST['judul'],
-    'isi'   => $_POST['isi']
-  ];
-  $update = $db->update('artikel', $data, "id=$id");
-  echo $update 
-    ? "<div class='alert alert-success'>Artikel berhasil diupdate!</div>" 
-    : "<div class='alert alert-danger'>Gagal update artikel.</div>";
+if (!$data) {
+    echo "<div class='container mt-4'>Data tidak ditemukan</div>";
+    exit;
 }
 
-echo "<h2>✏️ Edit Artikel</h2>";
-echo "<form method='POST'>";
-echo "<div class='mb-3'>
-        <label class='form-label'>Judul Artikel</label>
-        <input type='text' name='judul' class='form-control' value='{$artikel['judul']}'>
-      </div>";
-echo "<div class='mb-3'>
-        <label class='form-label'>Isi Artikel</label>
-        <textarea name='isi' class='form-control' rows='5'>{$artikel['isi']}</textarea>
-      </div>";
-echo "<button type='submit' class='btn btn-primary'>Update Artikel</button>";
-echo " <a href='/LAB11_PHP_OOP/artikel/index' class='btn btn-secondary'>Kembali</a>";
-echo "</form>";
+if ($_POST) {
+    $db->update(
+        'artikel',
+        [
+            'judul' => $_POST['judul'],
+            'isi'   => $_POST['isi']
+        ],
+        "id=$id"
+    );
+
+    header('Location: ' . $config['base_url'] . '/artikel/index');
+    exit;
+}
 ?>
+
+<div class="container mt-4">
+    <h3>Edit Artikel</h3>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label>Judul</label>
+            <input type="text" name="judul" value="<?= htmlspecialchars($data['judul']) ?>" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Isi Artikel</label>
+            <textarea name="isi" rows="5" class="form-control" required><?= htmlspecialchars($data['isi']) ?></textarea>
+        </div>
+
+        <button class="btn btn-primary">Update</button>
+        <a href="<?= $config['base_url'] ?>/artikel/index" class="btn btn-secondary">Kembali</a>
+    </form>
+</div>

@@ -1,10 +1,8 @@
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer>
-    &copy; 2025 Praktikum Web OOP | Universitas Pelita Bangsa
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<footer class="footer-fixed text-light text-center">
+    <small>
+        &copy; <?= date('Y') ?> Praktikum Web OOP | Bagus Sanjaya
+    </small>
+</footer>
+
 </body>
 </html>
